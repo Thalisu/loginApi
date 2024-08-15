@@ -1,3 +1,4 @@
+import { basename } from "path";
 import { z } from "zod";
 
 const BaseUserSchema = z.object({
@@ -27,3 +28,8 @@ export const LoginSchema = BaseUserSchema.pick({
   email: true,
   password: true,
 });
+
+export const UpdateSchema = BaseUserSchema.pick({
+  email: true,
+  name: true,
+}).partial();

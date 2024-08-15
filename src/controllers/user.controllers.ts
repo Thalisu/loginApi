@@ -23,6 +23,15 @@ export class UserControllers {
     return res.status(204).json({});
   }
 
+  async updateUser(req: Request, res: Response) {
+    const updatedUser = await this.userServices.updateUser(
+      req.params.id,
+      req.body
+    );
+
+    return res.status(200).json(updatedUser);
+  }
+
   async getUser(req: Request, res: Response) {
     const user = await this.userServices.getUser();
     return res.status(200).json(user);

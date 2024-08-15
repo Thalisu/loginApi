@@ -1,11 +1,15 @@
 import { getSecret } from "../lib/config";
 import jwt from "jsonwebtoken";
-import { TUserLoginBody, TNewUser } from "../lib/interfaces/user.interfaces";
+import {
+  TUserLoginBody,
+  TNewUser,
+  TUpdateUser,
+} from "../lib/interfaces/user.interfaces";
 import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
 import AppError from "../errors/appError";
 import { injectable } from "tsyringe";
-import { LoginSchema, SignUpSchema } from "../schema/user.schema";
+import { LoginSchema, SignUpSchema, UpdateSchema } from "../schema/user.schema";
 
 @injectable()
 export class UserServices {
@@ -52,6 +56,20 @@ export class UserServices {
   async deleteOne(id: string) {
     await prisma.user.delete({ where: { id } });
     return true;
+  }
+
+  async updateUser(id: string, body: TUpdateUser) {
+    const toUpdate = UpdateSchema.parse(body);
+
+    if (!toUpdate.name && !toUpdate.email) {
+      throw new AppError("Nothing to patch", 400);
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: toUpdate,
+    });
+    return { name: updatedUser.name, email: updatedUser.email };
   }
 
   async getUser() {

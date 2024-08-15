@@ -14,6 +14,9 @@ userRouter.post("/register", (req, res) => userControllers.register(req, res));
 userRouter.delete("/:id", verifyToken.execute, (req, res) =>
   userControllers.delete(req, res)
 );
+userRouter.patch("/user/:id", verifyToken.execute, (req, res) =>
+  userControllers.updateUser(req, res)
+);
 userRouter.get("/", verifyToken.execute, (req, res) =>
   userControllers.getUser(req, res)
 );

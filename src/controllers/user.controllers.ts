@@ -17,10 +17,9 @@ export class UserControllers {
     return res.status(201).json(response);
   }
 
-  async delete(req: Request, res: Response) {
-    await this.userServices.deleteOne(req.params.id);
-
-    return res.status(204).json({});
+  async getUser(req: Request, res: Response) {
+    const user = await this.userServices.getUser();
+    return res.status(200).json(user);
   }
 
   async updateUser(req: Request, res: Response) {
@@ -41,8 +40,9 @@ export class UserControllers {
     return res.status(200).json(updatedUser);
   }
 
-  async getUser(req: Request, res: Response) {
-    const user = await this.userServices.getUser();
-    return res.status(200).json(user);
+  async delete(req: Request, res: Response) {
+    await this.userServices.deleteOne(req.params.id);
+
+    return res.status(204).json({});
   }
 }

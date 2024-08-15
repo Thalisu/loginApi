@@ -57,10 +57,9 @@ export class UserServices {
 
     return { name, email, id };
   }
-
-  async deleteOne(id: string) {
-    await prisma.user.delete({ where: { id } });
-    return true;
+  async getUser() {
+    const users = await prisma.user.findMany();
+    return users;
   }
 
   async updateUser(id: string, body: TUpdateUser) {
@@ -111,8 +110,8 @@ export class UserServices {
     };
   }
 
-  async getUser() {
-    const users = await prisma.user.findMany();
-    return users;
+  async deleteOne(id: string) {
+    await prisma.user.delete({ where: { id } });
+    return true;
   }
 }

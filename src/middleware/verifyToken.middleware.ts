@@ -1,7 +1,7 @@
-import { getSecret } from "../config";
+import { getSecret } from "../lib/config";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { AppError } from "../errors/appError";
+import AppError from "../errors/appError";
 
 export class verifyToken {
   static execute(req: Request, res: Response, next: NextFunction) {

@@ -33,7 +33,7 @@ export class UserServices {
     const compare = await bcrypt.compare(requestUser.password, user?.password);
 
     if (!compare) {
-      throw new AppError("Incorrect password", 403);
+      throw new AppError("Incorrect password", 401);
     }
 
     const token = jwt.sign({ id: user.id }, secret, {
@@ -88,7 +88,13 @@ export class UserServices {
     const compare = await bcrypt.compare(data.oldPassword, user.password);
 
     if (!compare) {
-      throw new AppError("old password is incorrect", 403);
+      throw new AppError("old password is incorrect", 401);
+    }
+
+    const isTheSame = await bcrypt.compare(data.newPassword, user.password);
+
+    if (isTheSame) {
+      throw new AppError("new password is the same of previous password", 400);
     }
 
     const hashPassword = await bcrypt.hash(data.newPassword, 10);

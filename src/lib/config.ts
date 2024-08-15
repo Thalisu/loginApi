@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { AppError } from "./errors/appError";
+import AppError from "../errors/appError";
 export const getSecret = () => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {

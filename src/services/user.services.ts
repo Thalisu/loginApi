@@ -1,7 +1,7 @@
 import { getSecret } from "../config";
 import jwt from "jsonwebtoken";
 import { TUserLoginBody, TNewUser } from "../interfaces/user.interface";
-import prisma, { userDatabase } from "../database/prisma";
+import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
 import { AppError } from "../errors/appError";
 import { injectable } from "tsyringe";

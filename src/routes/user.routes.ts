@@ -17,6 +17,9 @@ userRouter.delete("/:id", verifyToken.execute, (req, res) =>
 userRouter.patch("/user/:id", verifyToken.execute, (req, res) =>
   userControllers.updateUser(req, res)
 );
+userRouter.patch("/password/:id", verifyToken.execute, (req, res) =>
+  userControllers.updatePassword(req, res)
+);
 userRouter.get("/", verifyToken.execute, (req, res) =>
   userControllers.getUser(req, res)
 );

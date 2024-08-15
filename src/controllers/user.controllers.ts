@@ -32,6 +32,15 @@ export class UserControllers {
     return res.status(200).json(updatedUser);
   }
 
+  async updatePassword(req: Request, res: Response) {
+    const updatedUser = await this.userServices.updatePassword(
+      req.params.id,
+      req.body
+    );
+
+    return res.status(200).json(updatedUser);
+  }
+
   async getUser(req: Request, res: Response) {
     const user = await this.userServices.getUser();
     return res.status(200).json(user);

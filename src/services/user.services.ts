@@ -9,7 +9,12 @@ import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
 import AppError from "../errors/appError";
 import { injectable } from "tsyringe";
-import { LoginSchema, SignUpSchema, UpdateUserSchema } from "../schema/user.schema";
+import {
+  LoginSchema,
+  SignUpSchema,
+  UpdatePasswordSchema,
+  UpdateUserSchema,
+} from "../schema/user.schema";
 
 @injectable()
 export class UserServices {
@@ -25,15 +30,15 @@ export class UserServices {
       throw new AppError("User not found", 404);
     }
 
-    const token = jwt.sign({ id: user.id }, secret, {
-      expiresIn: "24h",
-    });
-
     const compare = await bcrypt.compare(requestUser.password, user?.password);
 
     if (!compare) {
       throw new AppError("Incorrect password", 403);
     }
+
+    const token = jwt.sign({ id: user.id }, secret, {
+      expiresIn: "24h",
+    });
 
     return { accessToken: token, user: { name: user.name } };
   }
@@ -70,6 +75,34 @@ export class UserServices {
       data: toUpdate,
     });
     return { name: updatedUser.name, email: updatedUser.email };
+  }
+
+  async updatePassword(id: string, body: TUpdateUser) {
+    const data = UpdatePasswordSchema.parse(body);
+
+    const user = await prisma.user.findFirst({ where: { id } });
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    const compare = await bcrypt.compare(data.oldPassword, user.password);
+
+    if (!compare) {
+      throw new AppError("old password is incorrect", 403);
+    }
+
+    const hashPassword = await bcrypt.hash(data.newPassword, 10);
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: { password: hashPassword },
+    });
+
+    return {
+      name: updatedUser.name,
+      email: updatedUser.email,
+      password: updatedUser.password,
+    };
   }
 
   async getUser() {

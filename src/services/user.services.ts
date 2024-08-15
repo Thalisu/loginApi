@@ -1,9 +1,9 @@
-import { getSecret } from "../config";
+import { getSecret } from "../lib/config";
 import jwt from "jsonwebtoken";
-import { TUserLoginBody, TNewUser } from "../interfaces/user.interface";
+import { TUserLoginBody, TNewUser } from "../lib/interfaces/user.interfaces";
 import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
-import { AppError } from "../errors/appError";
+import AppError from "../errors/appError";
 import { injectable } from "tsyringe";
 import { LoginSchema, SignUpSchema } from "../schema/user.schema";
 
@@ -44,9 +44,14 @@ export class UserServices {
       password: hashPassword,
     };
 
-    await prisma.user.create({ data: newUser });
+    const { name, email, id } = await prisma.user.create({ data: newUser });
 
-    return { name: newUser.name, email: newUser.email };
+    return { name, email, id };
+  }
+
+  async deleteOne(id: string) {
+    await prisma.user.delete({ where: { id } });
+    return true;
   }
 
   async getUser() {

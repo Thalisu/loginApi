@@ -9,7 +9,7 @@ import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
 import AppError from "../errors/appError";
 import { injectable } from "tsyringe";
-import { LoginSchema, SignUpSchema, UpdateSchema } from "../schema/user.schema";
+import { LoginSchema, SignUpSchema, UpdateUserSchema } from "../schema/user.schema";
 
 @injectable()
 export class UserServices {
@@ -59,7 +59,7 @@ export class UserServices {
   }
 
   async updateUser(id: string, body: TUpdateUser) {
-    const toUpdate = UpdateSchema.parse(body);
+    const toUpdate = UpdateUserSchema.parse(body);
 
     if (!toUpdate.name && !toUpdate.email) {
       throw new AppError("Nothing to patch", 400);

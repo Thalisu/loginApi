@@ -29,7 +29,7 @@ export const LoginSchema = BaseUserSchema.pick({
   password: true,
 });
 
-export const UpdateSchema = BaseUserSchema.pick({
+export const UpdateUserSchema = BaseUserSchema.pick({
   email: true,
   name: true,
 }).partial();

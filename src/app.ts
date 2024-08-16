@@ -12,7 +12,7 @@ const app = express();
 app.use(helmet());
 app.use(json());
 
-app.use(userRouter);
+app.use("/api/user", userRouter);
 
 app.use(handleErrors.execute);
 

@@ -77,7 +77,7 @@ export class UserServices {
     return { name: updatedUser.name, email: updatedUser.email };
   }
 
-  async updatePassword(id: string, body: IUpdatePassword ) {
+  async updatePassword(id: string, body: IUpdatePassword) {
     const data = UpdatePasswordSchema.parse(body);
 
     const user = await prisma.user.findFirst({ where: { id } });
@@ -107,7 +107,6 @@ export class UserServices {
     return {
       name: updatedUser.name,
       email: updatedUser.email,
-      password: updatedUser.password,
     };
   }
 

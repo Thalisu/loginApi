@@ -119,7 +119,6 @@
     updatedUser: {
         name: string;
         email: string;
-        password: string;
     }
 
 ## Delete current user

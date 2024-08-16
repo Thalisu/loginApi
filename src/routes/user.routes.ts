@@ -11,7 +11,7 @@ const userControllers = container.resolve(UserControllers);
 
 userRouter.post("/login", (req, res) => userControllers.login(req, res));
 userRouter.post("/register", (req, res) => userControllers.register(req, res));
-userRouter.get("/", verifyToken.execute, (req, res) =>
+userRouter.get("/:id", verifyToken.execute, (req, res) =>
   userControllers.getUser(req, res)
 );
 userRouter.patch("/:id", verifyToken.execute, (req, res) =>

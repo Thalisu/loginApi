@@ -4,6 +4,7 @@ import {
   TUserLoginBody,
   TNewUser,
   TUpdateUser,
+  IUpdatePassword,
 } from "../lib/interfaces/user.interfaces";
 import prisma from "../database/prisma";
 import bcrypt from "bcrypt";
@@ -57,9 +58,9 @@ export class UserServices {
 
     return { name, email, id };
   }
-  async getUser() {
-    const users = await prisma.user.findMany();
-    return users;
+  async getUser(id: string) {
+    const user = await prisma.user.findFirst({ where: { id } });
+    return { id: user?.id, name: user?.name, email: user?.email };
   }
 
   async updateUser(id: string, body: TUpdateUser) {
@@ -76,7 +77,7 @@ export class UserServices {
     return { name: updatedUser.name, email: updatedUser.email };
   }
 
-  async updatePassword(id: string, body: TUpdateUser) {
+  async updatePassword(id: string, body: IUpdatePassword ) {
     const data = UpdatePasswordSchema.parse(body);
 
     const user = await prisma.user.findFirst({ where: { id } });
